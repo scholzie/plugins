@@ -6,6 +6,7 @@ import {
   listMatchingDaysEvents,
 } from '../../jgclark.EventHelpers/src/eventsToNotes'
 import { sweepTemplate } from '../../nmn.sweep/src/sweepAll'
+import { formatDateFromTemplate } from '../../dwertheimer.DateAutomations/src/dateFunctions'
 import { getWeatherSummary } from './weather'
 import { getDailyQuote } from './quote'
 import { parseJSON5 } from './configuration'
@@ -26,6 +27,7 @@ addTag('matchingEvents', listMatchingDaysEvents)
 addTag('listMatchingEvents', listMatchingDaysEvents)
 addTag('quote', getDailyQuote, true)
 addTag('sweepTasks', sweepTemplate)
+addTag('formatDate', formatDateFromTemplate)
 // **Add other extension function calls here**
 
 type TagListType = {

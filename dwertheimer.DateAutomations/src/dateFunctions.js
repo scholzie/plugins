@@ -3,7 +3,7 @@
 
 import { getStructuredConfiguration } from '../../nmn.Templates/src/configuration'
 import { hyphenatedDateString } from '../../nmn.sweep/src/dateHelpers'
-
+import { getTagParamsFromString } from '../../helperFunctions'
 type DateConfig = $ReadOnly<{
   timezone: string,
   locale: string,
@@ -192,4 +192,43 @@ export async function datePicker() {
     'Choose format (locale/dateStyle/timeStyle/hour12)',
   )
   Editor.insertTextAtCursor(dateChoices[re.index].text)
+}
+
+// Template processor function
+/**
+ * @description Format date Template processor function (invoked by a template command in nmn.Templates/templateController)
+ * @param {string} formatStr - strftime format string - e.g. "%Y-%m-%d %I:%M:%S %P"
+ * @usage {{formatDate({format:"%Y-%m-%d %I:%M:%S %P"})}}
+ * @returns {string} formatted date
+ */
+export async function formatDateFromTemplate(paramStr) {
+  const formatStr: string = String(
+    await getTagParamsFromString(paramStr, 'format', ''),
+  )
+  const dateStr: string = String(
+    await getTagParamsFromString(paramStr, 'date', null),
+  )
+  if (formatStr !== '') {
+    const date = dateStr ? new Date(dateStr) : new Date()
+    const formattedDateStr = await formatDate(formatStr, date)
+    return formattedDateStr
+  }
+  return ''
+}
+
+// Function which can be called by template processor or by a plugin command
+/**
+ * @description format a date using strftime
+ * @url https://www.strfti.me/?f=%25Y-%25m-%25d+%25I%3A%25M%3A%25S+%25P
+ * @param {string} formatStr - format string - e.g. "%Y-%m-%d %I:%M:%S %P"
+ * @param {Date} date - date object
+ * @returns {string} formatted date string
+ */
+export async function formatDate(
+  formatStr,
+  date = new Date(),
+): Promise<string> {
+  let formattedDateStr = ''
+  // do your strftime magic here
+  return formattedDateStr
 }
